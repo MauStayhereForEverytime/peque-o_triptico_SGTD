@@ -1,682 +1,1122 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SGTD · Municipalidad Provincial de Maynas</title>
-  <meta name="description" content="Sistema de Gestión de Trámite Documentario (SGTD) de la Municipalidad Provincial de Maynas: consulta el estado de tu documento de manera fácil, rápida y segura.">
+  <meta name="description"
+    content="Sistema de Gestión de Trámite Documentario (SGTD) de la Municipalidad Provincial de Maynas: consulta el estado de tu documento de manera fácil, rápida y segura.">
   <meta name="theme-color" content="#0048b0">
   <link rel="icon" href="assets/img/escudo-maynas.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Caveat:wght@700&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Caveat:wght@700&display=swap">
   <link rel="stylesheet" href="assets/css/triptico.css">
 </head>
+
 <body>
 
-<!-- ================================================================
+  <!-- ================================================================
      Sprite de íconos (se usan con <svg class="ico"><use href="#id"/></svg>)
      ================================================================ -->
-<svg class="sprite" aria-hidden="true" focusable="false">
-  <defs>
-    <pattern id="p-arcos-alto" width="26" height="34" patternUnits="userSpaceOnUse">
-      <path d="M7 34V13a6 6 0 0 1 12 0v21z"/>
-    </pattern>
-    <pattern id="p-arcos-bajo" width="26" height="46" patternUnits="userSpaceOnUse">
-      <path d="M5 46V16a8 8 0 0 1 16 0v30z"/>
-    </pattern>
-  </defs>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="p-arcos-alto" width="26" height="34" patternUnits="userSpaceOnUse">
+        <path d="M7 34V13a6 6 0 0 1 12 0v21z" />
+      </pattern>
+      <pattern id="p-arcos-bajo" width="26" height="46" patternUnits="userSpaceOnUse">
+        <path d="M5 46V16a8 8 0 0 1 16 0v30z" />
+      </pattern>
+    </defs>
 
-  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/></symbol>
-  <symbol id="i-doc-num" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13.8h6.2M8.8 17.2H15M11.2 11.5l-1 7.8M14.6 11.5l-1 7.8" stroke-width="1.6"/></symbol>
-  <symbol id="i-doc-mas" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 11v7M8.5 14.5h7"/></symbol>
-  <symbol id="i-doc-ok" viewBox="0 0 24 24"><path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8l6 6v3"/><path d="M14 2v6h6M8 9h2M8 13h4.5M8 17h2"/><circle cx="17.3" cy="17.3" r="5.7" fill="currentColor" stroke="none"/><path d="m14.8 17.4 1.8 1.8 3.2-3.4" stroke="var(--ico-contra, #fff)" stroke-width="1.8"/></symbol>
-  <symbol id="i-globo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M3.8 6.8h16.4M3.8 17.2h16.4"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></symbol>
-  <symbol id="i-lupa" viewBox="0 0 24 24"><circle cx="10.2" cy="10.2" r="7"/><path d="m21 21-5.8-5.8"/></symbol>
-  <symbol id="i-pantalla-clic" viewBox="0 0 24 24"><path d="M20.5 12.5V5A1.5 1.5 0 0 0 19 3.5H3A1.5 1.5 0 0 0 1.5 5v10.5A1.5 1.5 0 0 0 3 17h8.5"/><path d="m13.2 11.8 8.6 3.3-3.7 1.5-1.5 3.7z" fill="currentColor"/><path d="m18.4 17 3.3 3.3"/></symbol>
-  <symbol id="i-celular" viewBox="0 0 24 24"><rect x="6" y="1.5" width="12" height="21" rx="2.6"/><path d="M10.5 19.2h3"/></symbol>
-  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="1.2"/><path d="M1.5 19h21" stroke-width="2.6"/><path d="M4 15.5 2.6 18.6M20 15.5l1.4 3.1"/></symbol>
-  <symbol id="i-totem" viewBox="0 0 24 24"><g stroke="none"><rect x="6.8" y="1" width="10.4" height="13" rx="1.6" fill="currentColor"/><rect x="8.8" y="3" width="6.4" height="5.6" rx=".6" fill="var(--ico-contra, #fff)"/><circle cx="12" cy="11.2" r=".8" fill="var(--ico-contra, #fff)"/><path d="M8.6 14.6h6.8V23H8.6z" fill="currentColor"/></g></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.5 4.8v14.4L20 12z" fill="currentColor" stroke="currentColor" stroke-width="1.5"/></symbol>
-  <symbol id="i-personas" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="12" cy="7" r="3.4"/><circle cx="5" cy="8.6" r="2.5"/><circle cx="19" cy="8.6" r="2.5"/><path d="M6.2 20v-2.2a5.8 5.8 0 0 1 11.6 0V20z"/><path d="M.5 19.2v-1.4a4.2 4.2 0 0 1 4.3-4.2c.8 0 1.5.2 2.1.5a7.4 7.4 0 0 0-1.9 4.3v.8z"/><path d="M23.5 19.2v-1.4a4.2 4.2 0 0 0-4.3-4.2c-.8 0-1.5.2-2.1.5a7.4 7.4 0 0 1 1.9 4.3v.8z"/></g></symbol>
-  <symbol id="i-persona" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="12" cy="7.2" r="4.6"/><path d="M3.4 21.6a8.6 8 0 0 1 17.2 0z"/></g></symbol>
-  <symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6.5V12l3.6 2.3"/><path d="M12 3.4v1.2M12 19.4v1.2M3.4 12h1.2M19.4 12h1.2" stroke-width="1.5"/></symbol>
-  <symbol id="i-escudo-ok" viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5.2L12 2 4 5.2V12c0 6.4 8 10 8 10z"/><path d="m8.6 12 2.4 2.4 4.4-4.6"/></symbol>
-  <symbol id="i-like" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><rect x="1.5" y="10" width="4.4" height="11.5" rx="1"/><path d="M7.6 21.5V10.4l4.6-7.9c1.9 0 3 1.5 2.6 3.3l-.9 3.9h5.6c1.5 0 2.7 1.4 2.3 2.9l-2 7.3a2.2 2.2 0 0 1-2.1 1.6z"/></g></symbol>
-  <symbol id="i-hoja" viewBox="0 0 24 24"><path d="M21 2.5C11 2.8 4.2 7.4 4.1 15c0 1.6.4 3.1 1 4.3C13.8 20 20.8 14 21 2.5z" fill="currentColor" stroke="none"/><path d="M2.6 21.8C6 16 10 11.6 15.6 8" stroke="var(--ico-contra, #0058c6)" stroke-width="1.7"/></symbol>
-  <symbol id="i-organigrama" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M5 16v-3h14v3"/><rect x="2.3" y="16.3" width="5.4" height="5.4" rx="1"/><rect x="9.3" y="16.3" width="5.4" height="5.4" rx="1"/><rect x="16.3" y="16.3" width="5.4" height="5.4" rx="1"/></symbol>
-  <symbol id="i-portapapeles" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m8.5 14 2.5 2.5 4.6-5"/></symbol>
-  <symbol id="i-info" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="12" cy="5.2" r="2.3"/><path d="M8.6 9.4h5v9h1.8v2.6H8.6v-2.6h1.8v-6.4H8.6z"/></g></symbol>
-  <symbol id="i-lista" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><g fill="currentColor" stroke="none"><circle cx="4" cy="6" r="1.6"/><circle cx="4" cy="12" r="1.6"/><circle cx="4" cy="18" r="1.6"/></g></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.2 3 3 6-6.4"/></symbol>
-  <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.4h.01M12 13.4h.01M16.5 13.4h.01M7.5 17.4h.01M12 17.4h.01M16.5 17.4h.01" stroke-width="2.6"/></symbol>
-  <symbol id="i-edificio" viewBox="0 0 24 24"><path d="M2.5 9.5 12 3l9.5 6.5"/><path d="M4.5 9.5v11M19.5 9.5v11M2.5 20.5h19"/><path d="M10 20.5v-5h4v5"/><path d="M7.4 12.6h1.2M15.4 12.6h1.2M7.4 16.2h1.2M15.4 16.2h1.2" stroke-width="2.2"/></symbol>
-  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 3.5c5 0 9 3.4 9 7.7s-4 7.7-9 7.7c-1.2 0-2.3-.2-3.3-.5L4 20.5l1.3-4A7.2 7.2 0 0 1 3 11.2C3 6.9 7 3.5 12 3.5z"/><path d="M8 11.3h.01M12 11.3h.01M16 11.3h.01" stroke-width="2.8"/></symbol>
-  <symbol id="i-bd" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 7.8c1.5 1.3 4.6 2 8 2s6.5-.7 8-2v3.4c0 1.7-3.6 3-8 3s-8-1.3-8-3z"/><path d="M4 14c1.5 1.3 4.6 2 8 2s6.5-.7 8-2v3.4c0 1.7-3.6 3-8 3s-8-1.3-8-3z"/></g></symbol>
-  <symbol id="i-engrane" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" stroke-width="3.4" stroke-dasharray="3.22 3.22" stroke-linecap="butt"/><circle cx="12" cy="12" r="6.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2.6" fill="var(--ico-contra, #0a5fd6)" stroke="none"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6M8 13h8M8 17h8M8 9h2" />
+    </symbol>
+    <symbol id="i-doc-num" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M9 13.8h6.2M8.8 17.2H15M11.2 11.5l-1 7.8M14.6 11.5l-1 7.8" stroke-width="1.6" />
+    </symbol>
+    <symbol id="i-doc-mas" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6M12 11v7M8.5 14.5h7" />
+    </symbol>
+    <symbol id="i-doc-ok" viewBox="0 0 24 24">
+      <path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8l6 6v3" />
+      <path d="M14 2v6h6M8 9h2M8 13h4.5M8 17h2" />
+      <circle cx="17.3" cy="17.3" r="5.7" fill="currentColor" stroke="none" />
+      <path d="m14.8 17.4 1.8 1.8 3.2-3.4" stroke="var(--ico-contra, #fff)" stroke-width="1.8" />
+    </symbol>
+    <symbol id="i-globo" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M3.8 6.8h16.4M3.8 17.2h16.4" />
+      <path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" />
+    </symbol>
+    <symbol id="i-lupa" viewBox="0 0 24 24">
+      <circle cx="10.2" cy="10.2" r="7" />
+      <path d="m21 21-5.8-5.8" />
+    </symbol>
+    <symbol id="i-pantalla-clic" viewBox="0 0 24 24">
+      <path d="M20.5 12.5V5A1.5 1.5 0 0 0 19 3.5H3A1.5 1.5 0 0 0 1.5 5v10.5A1.5 1.5 0 0 0 3 17h8.5" />
+      <path d="m13.2 11.8 8.6 3.3-3.7 1.5-1.5 3.7z" fill="currentColor" />
+      <path d="m18.4 17 3.3 3.3" />
+    </symbol>
+    <symbol id="i-celular" viewBox="0 0 24 24">
+      <rect x="6" y="1.5" width="12" height="21" rx="2.6" />
+      <path d="M10.5 19.2h3" />
+    </symbol>
+    <symbol id="i-laptop" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="11" rx="1.2" />
+      <path d="M1.5 19h21" stroke-width="2.6" />
+      <path d="M4 15.5 2.6 18.6M20 15.5l1.4 3.1" />
+    </symbol>
+    <symbol id="i-totem" viewBox="0 0 24 24">
+      <g stroke="none">
+        <rect x="6.8" y="1" width="10.4" height="13" rx="1.6" fill="currentColor" />
+        <rect x="8.8" y="3" width="6.4" height="5.6" rx=".6" fill="var(--ico-contra, #fff)" />
+        <circle cx="12" cy="11.2" r=".8" fill="var(--ico-contra, #fff)" />
+        <path d="M8.6 14.6h6.8V23H8.6z" fill="currentColor" />
+      </g>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="M8.5 4.8v14.4L20 12z" fill="currentColor" stroke="currentColor" stroke-width="1.5" />
+    </symbol>
+    <symbol id="i-personas" viewBox="0 0 24 24">
+      <g fill="currentColor" stroke="none">
+        <circle cx="12" cy="7" r="3.4" />
+        <circle cx="5" cy="8.6" r="2.5" />
+        <circle cx="19" cy="8.6" r="2.5" />
+        <path d="M6.2 20v-2.2a5.8 5.8 0 0 1 11.6 0V20z" />
+        <path d="M.5 19.2v-1.4a4.2 4.2 0 0 1 4.3-4.2c.8 0 1.5.2 2.1.5a7.4 7.4 0 0 0-1.9 4.3v.8z" />
+        <path d="M23.5 19.2v-1.4a4.2 4.2 0 0 0-4.3-4.2c-.8 0-1.5.2-2.1.5a7.4 7.4 0 0 1 1.9 4.3v.8z" />
+      </g>
+    </symbol>
+    <symbol id="i-persona" viewBox="0 0 24 24">
+      <g fill="currentColor" stroke="none">
+        <circle cx="12" cy="7.2" r="4.6" />
+        <path d="M3.4 21.6a8.6 8 0 0 1 17.2 0z" />
+      </g>
+    </symbol>
+    <symbol id="i-reloj" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 6.5V12l3.6 2.3" />
+      <path d="M12 3.4v1.2M12 19.4v1.2M3.4 12h1.2M19.4 12h1.2" stroke-width="1.5" />
+    </symbol>
+    <symbol id="i-escudo-ok" viewBox="0 0 24 24">
+      <path d="M12 22s8-3.6 8-10V5.2L12 2 4 5.2V12c0 6.4 8 10 8 10z" />
+      <path d="m8.6 12 2.4 2.4 4.4-4.6" />
+    </symbol>
+    <symbol id="i-like" viewBox="0 0 24 24">
+      <g fill="currentColor" stroke="none">
+        <rect x="1.5" y="10" width="4.4" height="11.5" rx="1" />
+        <path
+          d="M7.6 21.5V10.4l4.6-7.9c1.9 0 3 1.5 2.6 3.3l-.9 3.9h5.6c1.5 0 2.7 1.4 2.3 2.9l-2 7.3a2.2 2.2 0 0 1-2.1 1.6z" />
+      </g>
+    </symbol>
+    <symbol id="i-hoja" viewBox="0 0 24 24">
+      <path d="M21 2.5C11 2.8 4.2 7.4 4.1 15c0 1.6.4 3.1 1 4.3C13.8 20 20.8 14 21 2.5z" fill="currentColor"
+        stroke="none" />
+      <path d="M2.6 21.8C6 16 10 11.6 15.6 8" stroke="var(--ico-contra, #0058c6)" stroke-width="1.7" />
+    </symbol>
+    <symbol id="i-organigrama" viewBox="0 0 24 24">
+      <circle cx="12" cy="5" r="3" />
+      <path d="M12 8v8M5 16v-3h14v3" />
+      <rect x="2.3" y="16.3" width="5.4" height="5.4" rx="1" />
+      <rect x="9.3" y="16.3" width="5.4" height="5.4" rx="1" />
+      <rect x="16.3" y="16.3" width="5.4" height="5.4" rx="1" />
+    </symbol>
+    <symbol id="i-portapapeles" viewBox="0 0 24 24">
+      <rect x="8" y="2" width="8" height="4" rx="1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <path d="m8.5 14 2.5 2.5 4.6-5" />
+    </symbol>
+    <symbol id="i-info" viewBox="0 0 24 24">
+      <g fill="currentColor" stroke="none">
+        <circle cx="12" cy="5.2" r="2.3" />
+        <path d="M8.6 9.4h5v9h1.8v2.6H8.6v-2.6h1.8v-6.4H8.6z" />
+      </g>
+    </symbol>
+    <symbol id="i-lista" viewBox="0 0 24 24">
+      <path d="M9 6h12M9 12h12M9 18h12" />
+      <g fill="currentColor" stroke="none">
+        <circle cx="4" cy="6" r="1.6" />
+        <circle cx="4" cy="12" r="1.6" />
+        <circle cx="4" cy="18" r="1.6" />
+      </g>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9.5" />
+      <path d="m7.5 12.2 3 3 6-6.4" />
+    </symbol>
+    <symbol id="i-calendario" viewBox="0 0 24 24">
+      <rect x="3" y="4.5" width="18" height="17" rx="2" />
+      <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+      <path d="M7.5 13.4h.01M12 13.4h.01M16.5 13.4h.01M7.5 17.4h.01M12 17.4h.01M16.5 17.4h.01" stroke-width="2.6" />
+    </symbol>
+    <symbol id="i-edificio" viewBox="0 0 24 24">
+      <path d="M2.5 9.5 12 3l9.5 6.5" />
+      <path d="M4.5 9.5v11M19.5 9.5v11M2.5 20.5h19" />
+      <path d="M10 20.5v-5h4v5" />
+      <path d="M7.4 12.6h1.2M15.4 12.6h1.2M7.4 16.2h1.2M15.4 16.2h1.2" stroke-width="2.2" />
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path
+        d="M12 3.5c5 0 9 3.4 9 7.7s-4 7.7-9 7.7c-1.2 0-2.3-.2-3.3-.5L4 20.5l1.3-4A7.2 7.2 0 0 1 3 11.2C3 6.9 7 3.5 12 3.5z" />
+      <path d="M8 11.3h.01M12 11.3h.01M16 11.3h.01" stroke-width="2.8" />
+    </symbol>
+    <symbol id="i-bd" viewBox="0 0 24 24">
+      <g fill="currentColor" stroke="none">
+        <ellipse cx="12" cy="5" rx="8" ry="3" />
+        <path d="M4 7.8c1.5 1.3 4.6 2 8 2s6.5-.7 8-2v3.4c0 1.7-3.6 3-8 3s-8-1.3-8-3z" />
+        <path d="M4 14c1.5 1.3 4.6 2 8 2s6.5-.7 8-2v3.4c0 1.7-3.6 3-8 3s-8-1.3-8-3z" />
+      </g>
+    </symbol>
+    <symbol id="i-engrane" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.2" stroke-width="3.4" stroke-dasharray="3.22 3.22" stroke-linecap="butt" />
+      <circle cx="12" cy="12" r="6.4" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="2.6" fill="var(--ico-contra, #0a5fd6)" stroke="none" />
+    </symbol>
 
-  <!-- Trazo de pincel bajo los textos manuscritos -->
-  <symbol id="trazo" viewBox="0 0 200 24"><path d="M2 21C60 9 128 3 198 4 130 7.5 66 14.5 4 23.5z" fill="currentColor"/></symbol>
+    <!-- Trazo de pincel bajo los textos manuscritos -->
+    <symbol id="trazo" viewBox="0 0 200 24">
+      <path d="M2 21C60 9 128 3 198 4 130 7.5 66 14.5 4 23.5z" fill="currentColor" />
+    </symbol>
 
-  <!-- Palmera en silueta -->
-  <symbol id="palmera" viewBox="0 0 120 240">
-    <path d="M57 240c-2-60 0-140 4-196h3c-1 58-2 136 0 196z"/>
-    <path d="M62 42C44 22 20 20 2 34c20-6 38-2 58 10z"/>
-    <path d="M62 42C80 20 104 20 118 36c-20-8-36-4-54 8z"/>
-    <path d="M62 42C54 18 60 4 72 0c-6 12-6 26-8 42z"/>
-    <path d="M62 42C40 38 22 54 14 76c12-16 28-26 48-32z"/>
-    <path d="M62 42c22-2 40 12 48 34-14-16-28-24-48-32z"/>
-    <path d="M62 42C48 26 34 12 18 10c16 8 28 18 42 34z"/>
-    <path d="M62 42c12-18 28-30 44-30-16 6-28 18-42 32z"/>
-  </symbol>
+    <!-- Palmera en silueta -->
+    <symbol id="palmera" viewBox="0 0 120 240">
+      <path d="M57 240c-2-60 0-140 4-196h3c-1 58-2 136 0 196z" />
+      <path d="M62 42C44 22 20 20 2 34c20-6 38-2 58 10z" />
+      <path d="M62 42C80 20 104 20 118 36c-20-8-36-4-54 8z" />
+      <path d="M62 42C54 18 60 4 72 0c-6 12-6 26-8 42z" />
+      <path d="M62 42C40 38 22 54 14 76c12-16 28-26 48-32z" />
+      <path d="M62 42c22-2 40 12 48 34-14-16-28-24-48-32z" />
+      <path d="M62 42C48 26 34 12 18 10c16 8 28 18 42 34z" />
+      <path d="M62 42c12-18 28-30 44-30-16 6-28 18-42 32z" />
+    </symbol>
 
-  <!-- Silueta de la ciudad (fondo de las franjas azules) -->
-  <symbol id="ciudad" viewBox="0 0 512 240" preserveAspectRatio="xMidYMax slice">
-    <g fill="#ffffff" fill-opacity=".09">
-      <path d="M40 240V96h14V72h6V54a19 19 0 0 1 38 0v18h6v24h14v144z"/>
-      <path d="M77 35V18M71 25h12" stroke="#fff" stroke-opacity=".2" stroke-width="3"/>
-      <path d="M126 240V132h22v-12h316v12h48v108z"/>
-      <path d="M232 120l14-18h100l14 18z"/>
-    </g>
-    <g fill="#032a68" fill-opacity=".28">
-      <path d="M71 128a8 8 0 0 1 16 0v28H71zM71 190a8 8 0 0 1 16 0v28H71zM68 64a11 11 0 0 1 22 0v8H68z"/>
-      <rect x="136" y="142" width="370" height="34" fill="url(#p-arcos-alto)"/>
-      <rect x="136" y="194" width="370" height="46" fill="url(#p-arcos-bajo)"/>
-      <rect x="126" y="182" width="386" height="4"/>
-    </g>
-    <g fill="#021c46" fill-opacity=".38">
-      <use href="#palmera" x="-18" y="70" width="84" height="170"/>
-      <use href="#palmera" x="96" y="120" width="60" height="120"/>
-      <use href="#palmera" x="398" y="40" width="96" height="200"/>
-      <use href="#palmera" x="456" y="96" width="70" height="144"/>
-    </g>
-  </symbol>
-</svg>
+    <!-- Silueta de la ciudad (fondo de las franjas azules) -->
+    <symbol id="ciudad" viewBox="0 0 512 240" preserveAspectRatio="xMidYMax slice">
+      <g fill="#ffffff" fill-opacity=".09">
+        <path d="M40 240V96h14V72h6V54a19 19 0 0 1 38 0v18h6v24h14v144z" />
+        <path d="M77 35V18M71 25h12" stroke="#fff" stroke-opacity=".2" stroke-width="3" />
+        <path d="M126 240V132h22v-12h316v12h48v108z" />
+        <path d="M232 120l14-18h100l14 18z" />
+      </g>
+      <g fill="#032a68" fill-opacity=".28">
+        <path d="M71 128a8 8 0 0 1 16 0v28H71zM71 190a8 8 0 0 1 16 0v28H71zM68 64a11 11 0 0 1 22 0v8H68z" />
+        <rect x="136" y="142" width="370" height="34" fill="url(#p-arcos-alto)" />
+        <rect x="136" y="194" width="370" height="46" fill="url(#p-arcos-bajo)" />
+        <rect x="126" y="182" width="386" height="4" />
+      </g>
+      <g fill="#021c46" fill-opacity=".38">
+        <use href="#palmera" x="-18" y="70" width="84" height="170" />
+        <use href="#palmera" x="96" y="120" width="60" height="120" />
+        <use href="#palmera" x="398" y="40" width="96" height="200" />
+        <use href="#palmera" x="456" y="96" width="70" height="144" />
+      </g>
+    </symbol>
+  </svg>
 
-<header class="barra">
-  <a class="barra__marca" href="#exterior">
-    <img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
-    <span>SGTD <small>Municipalidad Provincial de Maynas</small></span>
-  </a>
+  <header class="barra">
+    <a class="barra__marca" href="#exterior">
+      <img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
+      <span>SGTD <small>Municipalidad Provincial de Maynas</small></span>
+    </a>
   <nav class="barra__nav" aria-label="Caras del tríptico">
     <a href="#exterior">Cara exterior</a>
     <a href="#interior">Cara interior</a>
+    <a href="#totem">Tótem</a>
   </nav>
-</header>
+  </header>
 
-<main>
+  <main>
 
-<!-- ================================================================
+    <!-- ================================================================
      CARA EXTERIOR · Portada · Anteportada · Hoja doble
      ================================================================ -->
-<section class="cara" id="exterior" aria-labelledby="rotulo-exterior">
-  <p class="cara__rotulo" id="rotulo-exterior">Cara exterior <span>Portada · Anteportada · Hoja doble</span></p>
+    <section class="cara" id="exterior" aria-labelledby="rotulo-exterior">
+      <p class="cara__rotulo" id="rotulo-exterior">Cara exterior <span>Portada · Anteportada · Hoja doble</span></p>
 
-  <div class="hoja">
+      <div class="hoja">
 
-    <!-- ───────────── PANEL 1 · PORTADA ───────────── -->
-    <article class="panel panel--portada" aria-label="Portada">
-      <div class="panel__in">
+        <!-- ───────────── PANEL 1 · PORTADA ───────────── -->
+        <article class="panel panel--portada" aria-label="Portada">
+          <div class="panel__in">
 
-        <div class="portada__fondo" aria-hidden="true">
-          <svg class="portada__cielo" viewBox="0 0 512 820" preserveAspectRatio="xMidYMin slice">
-            <defs>
-              <linearGradient id="g-cielo" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#cfe2f5"/>
-                <stop offset=".45" stop-color="#eef5fb"/>
-                <stop offset="1" stop-color="#f4f8fb"/>
-              </linearGradient>
-              <filter id="f-nube" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="14"/></filter>
-              <filter id="f-lejos" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.6"/></filter>
-            </defs>
-            <rect width="512" height="820" fill="url(#g-cielo)"/>
-            <g fill="#fff" filter="url(#f-nube)">
-              <ellipse cx="90" cy="120" rx="140" ry="40"/>
-              <ellipse cx="420" cy="80" rx="150" ry="36"/>
-              <ellipse cx="380" cy="300" rx="170" ry="46"/>
-              <ellipse cx="120" cy="420" rx="160" ry="40"/>
-            </g>
-            <use href="#palmera" x="-52" y="190" width="190" height="380" fill="#6f9297" opacity=".5" filter="url(#f-lejos)"/>
-          </svg>
-          <div class="portada__edificio">
-            <svg viewBox="0 0 640 250" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="g-fachada" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#fdfdfe"/>
-                  <stop offset="1" stop-color="#e2e8ee"/>
-                </linearGradient>
-                <pattern id="p-arcos-portada" x="14" width="66" height="140" patternUnits="userSpaceOnUse">
-                  <path d="M8 140V56a25 25 0 0 1 50 0v84z" fill="#cfd7df"/>
-                  <path d="M13 140V58a20 20 0 0 1 40 0v82z" fill="#a4b1c0"/>
-                </pattern>
-              </defs>
-              <rect width="640" height="250" fill="url(#g-fachada)"/>
-              <rect width="640" height="14" fill="#e4e9ef"/>
-              <rect y="62" width="640" height="9" fill="#d6dde5"/>
-              <text x="150" y="47" font-family="Fira Sans Condensed, Ubuntu, sans-serif" font-weight="600" font-size="23" letter-spacing="6" fill="#8a95a1">MUNICIPALIDAD DE MAYNAS</text>
-              <rect y="104" width="640" height="146" fill="url(#p-arcos-portada)"/>
-            </svg>
-          </div>
-          <svg class="portada__arboles" viewBox="0 0 512 820" preserveAspectRatio="xMidYMin slice">
-            <defs>
-              <linearGradient id="g-agua" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#dfe7ee"/>
-                <stop offset="1" stop-color="#c9d6e2"/>
-              </linearGradient>
-            </defs>
-            <rect y="628" width="512" height="192" fill="url(#g-agua)"/>
-            <rect y="640" width="512" height="3" fill="#fff" opacity=".6"/>
-            <g filter="url(#f-lejos)">
-              <use href="#palmera" x="440" y="360" width="110" height="230" fill="#58807a" opacity=".6"/>
-              <use href="#palmera" x="300" y="440" width="70" height="150" fill="#5f8a7c" opacity=".45"/>
-            </g>
-          </svg>
-        </div>
+            <div class="portada__fondo" aria-hidden="true">
+              <svg class="portada__cielo" viewBox="0 0 512 820" preserveAspectRatio="xMidYMin slice">
+                <defs>
+                  <linearGradient id="g-cielo" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#cfe2f5" />
+                    <stop offset=".45" stop-color="#eef5fb" />
+                    <stop offset="1" stop-color="#f4f8fb" />
+                  </linearGradient>
+                  <filter id="f-nube" x="-30%" y="-80%" width="160%" height="260%">
+                    <feGaussianBlur stdDeviation="14" />
+                  </filter>
+                  <filter id="f-lejos" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="1.6" />
+                  </filter>
+                </defs>
+                <rect width="512" height="820" fill="url(#g-cielo)" />
+                <g fill="#fff" filter="url(#f-nube)">
+                  <ellipse cx="90" cy="120" rx="140" ry="40" />
+                  <ellipse cx="420" cy="80" rx="150" ry="36" />
+                  <ellipse cx="380" cy="300" rx="170" ry="46" />
+                  <ellipse cx="120" cy="420" rx="160" ry="40" />
+                </g>
+                <use href="#palmera" x="-52" y="190" width="190" height="380" fill="#6f9297" opacity=".5"
+                  filter="url(#f-lejos)" />
+              </svg>
+              <div class="portada__edificio">
+                <svg viewBox="0 0 640 250" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="g-fachada" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#fdfdfe" />
+                      <stop offset="1" stop-color="#e2e8ee" />
+                    </linearGradient>
+                    <pattern id="p-arcos-portada" x="14" width="66" height="140" patternUnits="userSpaceOnUse">
+                      <path d="M8 140V56a25 25 0 0 1 50 0v84z" fill="#cfd7df" />
+                      <path d="M13 140V58a20 20 0 0 1 40 0v82z" fill="#a4b1c0" />
+                    </pattern>
+                  </defs>
+                  <rect width="640" height="250" fill="url(#g-fachada)" />
+                  <rect width="640" height="14" fill="#e4e9ef" />
+                  <rect y="62" width="640" height="9" fill="#d6dde5" />
+                  <text x="150" y="47" font-family="Fira Sans Condensed, Ubuntu, sans-serif" font-weight="600"
+                    font-size="23" letter-spacing="6" fill="#8a95a1">MUNICIPALIDAD DE MAYNAS</text>
+                  <rect y="104" width="640" height="146" fill="url(#p-arcos-portada)" />
+                </svg>
+              </div>
+              <svg class="portada__arboles" viewBox="0 0 512 820" preserveAspectRatio="xMidYMin slice">
+                <defs>
+                  <linearGradient id="g-agua" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#dfe7ee" />
+                    <stop offset="1" stop-color="#c9d6e2" />
+                  </linearGradient>
+                </defs>
+                <rect y="628" width="512" height="192" fill="url(#g-agua)" />
+                <rect y="640" width="512" height="3" fill="#fff" opacity=".6" />
+                <g filter="url(#f-lejos)">
+                  <use href="#palmera" x="440" y="360" width="110" height="230" fill="#58807a" opacity=".6" />
+                  <use href="#palmera" x="300" y="440" width="70" height="150" fill="#5f8a7c" opacity=".45" />
+                </g>
+              </svg>
+            </div>
 
-        <header class="marca">
-          <img class="marca__escudo" src="assets/img/escudo-maynas.png" alt="Escudo de la Municipalidad Provincial de Maynas" width="346" height="523">
-          <p class="marca__txt">
-            <span class="marca__pre">Municipalidad Provincial de</span>
-            <span class="marca__nombre">MAYNAS</span>
-            <span class="marca__lema">Gestión que construye bienestar</span>
-          </p>
-        </header>
+            <header class="marca">
+              <img class="marca__escudo" src="assets/img/escudo-maynas.png"
+                alt="Escudo de la Municipalidad Provincial de Maynas" width="346" height="523">
+              <p class="marca__txt">
+                <span class="marca__pre">Municipalidad Provincial de</span>
+                <span class="marca__nombre">MAYNAS</span>
+                <!-- <span class="marca__lema">Gestión que construye bienestar</span> -->
+              </p>
+            </header>
 
-        <h1 class="portada__titulo">
-          Sistema de Gestión <br>de Trámite <br>Documentario
-          <span class="portada__sigla">SGTD</span>
-        </h1>
-        <p class="portada__bajada">Consulta el estado de tu documento <br>de manera fácil, rápida y segura</p>
+            <h1 class="portada__titulo">
+              Sistema de Gestión <br>de Trámite <br>Documentario
+              <span class="portada__sigla">SGTD</span>
+            </h1>
+            <p class="portada__bajada">Consulta el estado de tu documento <br>de manera fácil, rápida y segura</p>
 
-        <div class="portada__escena">
-          <svg class="portada__ola" viewBox="0 0 512 130" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="g-ola-portada" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#1c7fe0"/>
-                <stop offset=".5" stop-color="#5aa9ee"/>
-                <stop offset="1" stop-color="#1c7fe0"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 18C70 6 130 40 220 58S420 48 512 44V130H0z" fill="#8cc4f3" opacity=".55"/>
-            <path d="M0 34C60 30 120 56 200 70s220-2 312-10V130H0z" fill="url(#g-ola-portada)"/>
-            <path d="M0 96C110 60 400 58 512 84V130H0z" fill="#f5f9fd"/>
-          </svg>
+            <div class="portada__escena">
+              <svg class="portada__ola" viewBox="0 0 512 130" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g-ola-portada" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#1c7fe0" />
+                    <stop offset=".5" stop-color="#5aa9ee" />
+                    <stop offset="1" stop-color="#1c7fe0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0 18C70 6 130 40 220 58S420 48 512 44V130H0z" fill="#8cc4f3" opacity=".55" />
+                <path d="M0 34C60 30 120 56 200 70s220-2 312-10V130H0z" fill="url(#g-ola-portada)" />
+                <path d="M0 96C110 60 400 58 512 84V130H0z" fill="#f5f9fd" />
+              </svg>
 
-          <div class="laptop laptop--portada" role="img" aria-label="Laptop mostrando la consulta de seguimiento de trámite del SGTD">
-            <div class="laptop__tapa">
-              <div class="laptop__pantalla">
-                <div class="ui">
-                  <div class="ui__cabecera">
-                    <span class="ui__logo"><img src="assets/img/escudo-maynas.png" alt="" width="346" height="523"><b>MAYNAS</b></span>
-                    <span class="ui__titulo">Seguimiento de trámite <small>Consulta en línea</small></span>
-                  </div>
-                  <div class="ui__busqueda">
-                    <small>NÚMERO DE DOCUMENTO</small>
-                    <div class="ui__campo">
-                      <span><svg class="ico"><use href="#i-lupa"/></svg>Ej: 1-2026-MPROCE</span>
-                      <b>Buscar</b>
+              <div class="laptop laptop--portada" role="img"
+                aria-label="Laptop mostrando la consulta de seguimiento de trámite del SGTD">
+                <div class="laptop__tapa">
+                  <div class="laptop__pantalla">
+                    <div class="ui">
+                      <div class="ui__cabecera">
+                        <span class="ui__logo"><img src="assets/img/escudo-maynas.png" alt="" width="346"
+                            height="523"><b>MAYNAS</b></span>
+                        <span class="ui__titulo">Seguimiento de trámite <small>Consulta en línea</small></span>
+                      </div>
+                      <div class="ui__busqueda">
+                        <small>NÚMERO DE DOCUMENTO</small>
+                        <div class="ui__campo">
+                          <span><svg class="ico">
+                              <use href="#i-lupa" />
+                            </svg>Ej: 1-2026-MPROCE</span>
+                          <b>Buscar</b>
+                        </div>
+                      </div>
+                      <div class="ui__tarjetas">
+                        <div><svg class="ico">
+                            <use href="#i-persona" />
+                          </svg><b>Consulta rápida</b>
+                          <p>Encuentra la información de tus trámites en pocos segundos.</p>
+                        </div>
+                        <div><svg class="ico">
+                            <use href="#i-lupa" />
+                          </svg><b>Acceso público</b>
+                          <p>Información disponible para todos de manera simple y segura.</p>
+                        </div>
+                        <div><svg class="ico">
+                            <use href="#i-doc" />
+                          </svg><b>Seguimiento transparente</b>
+                          <p>Conoce el estado de tus expedientes en cada etapa del proceso.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="ui__tarjetas">
-                    <div><svg class="ico"><use href="#i-persona"/></svg><b>Consulta rápida</b><p>Encuentra la información de tus trámites en pocos segundos.</p></div>
-                    <div><svg class="ico"><use href="#i-lupa"/></svg><b>Acceso público</b><p>Información disponible para todos de manera simple y segura.</p></div>
-                    <div><svg class="ico"><use href="#i-doc"/></svg><b>Seguimiento transparente</b><p>Conoce el estado de tus expedientes en cada etapa del proceso.</p></div>
-                  </div>
                 </div>
+                <div class="laptop__base"><span class="laptop__teclas"></span><span class="laptop__touch"></span></div>
               </div>
             </div>
-            <div class="laptop__base"><span class="laptop__teclas"></span><span class="laptop__touch"></span></div>
+
+            <ul class="sellos">
+              <li><span class="disco"><svg class="ico">
+                    <use href="#i-doc" />
+                  </svg></span><span>Digital <br>y accesible</span></li>
+              <li><span class="disco"><svg class="ico">
+                    <use href="#i-lupa" />
+                  </svg></span><span>Seguimiento <br>en línea</span></li>
+              <li><span class="disco"><svg class="ico">
+                    <use href="#i-escudo-ok" />
+                  </svg></span><span>Transparencia <br>y confianza</span></li>
+            </ul>
+
+            <p class="mano portada__lema">
+              <span class="portada__lema-1">Juntos por una</span>
+              <span>municipalidad más moderna y eficiente</span>
+              <svg class="trazo" aria-hidden="true">
+                <use href="#trazo" />
+              </svg>
+            </p>
           </div>
-        </div>
+        </article>
 
-        <ul class="sellos">
-          <li><span class="disco"><svg class="ico"><use href="#i-doc"/></svg></span><span>Digital <br>y accesible</span></li>
-          <li><span class="disco"><svg class="ico"><use href="#i-lupa"/></svg></span><span>Seguimiento <br>en línea</span></li>
-          <li><span class="disco"><svg class="ico"><use href="#i-escudo-ok"/></svg></span><span>Transparencia <br>y confianza</span></li>
-        </ul>
+        <!-- ───────────── PANEL 2 · ANTEPORTADA ───────────── -->
+        <article class="panel panel--consulta" aria-labelledby="t-consulta">
+          <div class="panel__in">
+            <h2 class="cinta" id="t-consulta">¿Cómo consultar tu trámite?</h2>
+            <p class="bajada">Sigue estos simples pasos</p>
 
-        <p class="mano portada__lema">
-          <span class="portada__lema-1">Juntos por una</span>
-          <span>municipalidad más moderna y eficiente</span>
-          <svg class="trazo" aria-hidden="true"><use href="#trazo"/></svg>
-        </p>
-      </div>
-    </article>
+            <ol class="pasos">
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">1</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-globo" />
+                  </svg></span>
+                <div>
+                  <h3>Ingresa al sistema</h3>
+                  <p>Accede desde el portal institucional de la Municipalidad Provincial de Maynas o desde el enlace
+                    directo del SGTD.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">2</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-doc-num" />
+                  </svg></span>
+                <div>
+                  <h3>Ingresa el número de documento</h3>
+                  <p>Escribe el número con el que registraste tu documento en la Mesa de Partes (presencial o virtual).
+                  </p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">3</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-lupa" />
+                  </svg></span>
+                <div>
+                  <h3>Visualiza la información</h3>
+                  <p>El sistema te mostrará el estado actual de tu trámite, el área donde se encuentra y los movimientos
+                    realizados.</p>
+                </div>
+              </li>
+            </ol>
 
-    <!-- ───────────── PANEL 2 · ANTEPORTADA ───────────── -->
-    <article class="panel panel--consulta" aria-labelledby="t-consulta">
-      <div class="panel__in">
-        <h2 class="cinta" id="t-consulta">¿Cómo consultar tu trámite?</h2>
-        <p class="bajada">Sigue estos simples pasos</p>
-
-        <ol class="pasos">
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">1</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-globo"/></svg></span>
-            <div>
-              <h3>Ingresa al sistema</h3>
-              <p>Accede desde el portal institucional de la Municipalidad Provincial de Maynas o desde el enlace directo del SGTD.</p>
-            </div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">2</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-doc-num"/></svg></span>
-            <div>
-              <h3>Ingresa el número de documento</h3>
-              <p>Escribe el número con el que registraste tu documento en la Mesa de Partes (presencial o virtual).</p>
-            </div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">3</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-lupa"/></svg></span>
-            <div>
-              <h3>Visualiza la información</h3>
-              <p>El sistema te mostrará el estado actual de tu trámite, el área donde se encuentra y los movimientos realizados.</p>
-            </div>
-          </li>
-        </ol>
-
-        <div class="recuadro acceso">
-          <div class="acceso__info">
-            <p class="acceso__titulo"><svg class="ico" aria-hidden="true"><use href="#i-pantalla-clic"/></svg>Accede al sistema aquí</p>
-            <!-- PENDIENTE: cuando exista el enlace, cambiar este <span> por
+            <div class="recuadro acceso">
+              <div class="acceso__info">
+                <p class="acceso__titulo"><svg class="ico" aria-hidden="true">
+                    <use href="#i-pantalla-clic" />
+                  </svg>Accede al sistema aquí</p>
+                <!-- PENDIENTE: cuando exista el enlace, cambiar este <span> por
                  <a class="url-pill" href="https://…">https://…</a> -->
-            <span class="url-pill" data-pendiente="enlace-sgtd">https://sgtd.munimaynas.gob.pe/</span>
-          </div>
-          <!-- PENDIENTE: reemplazar el marcador por
+                <span class="url-pill" data-pendiente="enlace-sgtd">https://sgtd.munimaynas.gob.pe/</span>
+              </div>
+              <!-- PENDIENTE: reemplazar el marcador por
                <img class="qr__img" src="assets/img/qr-sgtd.png" alt="Código QR para acceder al SGTD"> -->
-          <div class="qr" data-pendiente="qr-sgtd" role="img" aria-label="Código QR del sistema (pendiente)">
-            <span class="qr__marco"><i></i><i></i><i></i><b>QR pendiente</b></span>
-          </div>
-        </div>
+              <div class="qr" data-pendiente="qr-sgtd" role="img" aria-label="Código QR del sistema (pendiente)">
+                <span class="qr__marco"><i></i><i></i><i></i><b>QR pendiente</b></span>
+              </div>
+            </div>
 
-        <h2 class="cinta cinta--barra">Puedes ingresar desde:</h2>
-        <ul class="dispositivos">
-          <li>
-            <span class="burbuja"><svg class="ico"><use href="#i-celular"/></svg></span>
-            <h3>Celular</h3>
-            <p>Desde tu teléfono móvil, en cualquier lugar.</p>
-          </li>
-          <li>
-            <span class="burbuja"><svg class="ico"><use href="#i-laptop"/></svg></span>
-            <h3>Computadora</h3>
-            <p>Desde tu PC o laptop, de forma rápida y segura.</p>
-          </li>
-          <li>
-            <span class="burbuja"><svg class="ico"><use href="#i-totem"/></svg></span>
-            <h3>Tótem de la entrada del municipio</h3>
-            <p>También puedes consultar desde el tótem de atención ciudadana.</p>
-          </li>
-        </ul>
+            <h2 class="cinta cinta--barra">Puedes ingresar desde:</h2>
+            <ul class="dispositivos">
+              <li>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-celular" />
+                  </svg></span>
+                <h3>Celular</h3>
+                <p>Desde tu teléfono móvil, en cualquier lugar.</p>
+              </li>
+              <li>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-laptop" />
+                  </svg></span>
+                <h3>Computadora</h3>
+                <p>Desde tu PC o laptop, de forma rápida y segura.</p>
+              </li>
+              <li>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-totem" />
+                  </svg></span>
+                <h3>Tótem de la entrada del municipio</h3>
+                <p>También puedes consultar desde el tótem de atención ciudadana.</p>
+              </li>
+            </ul>
 
-        <!-- PENDIENTE: cuando exista el video, envolver este bloque en
+            <!-- PENDIENTE: cuando exista el video, envolver este bloque en
              <a href="https://…">…</a> y colocar el QR real -->
-        <div class="recuadro video" data-pendiente="enlace-video">
-          <span class="video__play" aria-hidden="true"><span><svg class="ico"><use href="#i-play"/></svg></span></span>
-          <p>Ingresa al video de <br>demostración aquí</p>
-          <div class="qr qr--chico" data-pendiente="qr-video" role="img" aria-label="Código QR del video de demostración (pendiente)">
-            <span class="qr__marco"><i></i><i></i><i></i><b>QR pendiente</b></span>
+            <div class="recuadro video" data-pendiente="enlace-video">
+              <span class="video__play" aria-hidden="true"><span><svg class="ico">
+                    <use href="#i-play" />
+                  </svg></span></span>
+              <p>Ingresa al video de <br>demostración aquí</p>
+              <div class="qr qr--chico" data-pendiente="qr-video" role="img"
+                aria-label="Código QR del video de demostración (pendiente)">
+                <span class="qr__marco"><i></i><i></i><i></i><b>QR pendiente</b></span>
+              </div>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <!-- ───────────── PANEL 3 · HOJA DOBLE ───────────── -->
+        <article class="panel panel--sgtd" aria-labelledby="t-que-es">
+          <div class="panel__in">
+            <section class="que-es">
+              <h2 class="que-es__cinta" id="t-que-es">
+                <span class="que-es__icono"><svg class="ico" aria-hidden="true">
+                    <use href="#i-doc" />
+                  </svg></span>
+                ¿Qué es el SGTD?
+              </h2>
+              <p>El <strong>Sistema de Gestión de Trámite Documentario (SGTD)</strong> es una plataforma digital que
+                permite a los ciudadanos consultar el estado de los documentos registrados en la Municipalidad
+                Provincial de Maynas, de manera rápida, segura y transparente.</p>
+              <p class="mas-info"><span>Más información, <br>más confianza</span><svg class="ico" aria-hidden="true">
+                  <use href="#i-doc-ok" />
+                </svg></p>
+            </section>
+
+            <section>
+              <h2 class="cinta-lateral"><svg class="ico" aria-hidden="true">
+                  <use href="#i-personas" />
+                </svg>Beneficios para el ciudadano</h2>
+              <ul class="beneficios">
+                <li class="item">
+                  <span class="disco"><svg class="ico">
+                      <use href="#i-reloj" />
+                    </svg></span>
+                  <div>
+                    <h3>Mayor rapidez</h3>
+                    <p>Conoce el estado de tu trámite en línea, <br>sin necesidad de acudir personalmente.</p>
+                  </div>
+                </li>
+                <li class="item">
+                  <span class="disco"><svg class="ico">
+                      <use href="#i-lupa" />
+                    </svg></span>
+                  <div>
+                    <h3>Información accesible</h3>
+                    <p>Visualiza en qué área se encuentra tu documento <br>y los movimientos realizados.</p>
+                  </div>
+                </li>
+                <li class="item">
+                  <span class="disco"><svg class="ico">
+                      <use href="#i-escudo-ok" />
+                    </svg></span>
+                  <div>
+                    <h3>Mayor transparencia</h3>
+                    <p>Acceso a información actualizada y confiable.</p>
+                  </div>
+                </li>
+                <li class="item">
+                  <span class="disco"><svg class="ico">
+                      <use href="#i-like" />
+                    </svg></span>
+                  <div>
+                    <h3>Mejor atención</h3>
+                    <p>Un municipio más cercano y al servicio del ciudadano.</p>
+                  </div>
+                </li>
+                <li class="item">
+                  <span class="disco"><svg class="ico">
+                      <use href="#i-hoja" />
+                    </svg></span>
+                  <div>
+                    <h3>Contribuye al cuidado del medio ambiente</h3>
+                    <p>Reduce el uso de papel y promueve la gestión digital.</p>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <div class="franja">
+              <div class="franja__foto" aria-hidden="true"><svg>
+                  <use href="#ciudad" />
+                </svg></div>
+              <svg class="franja__ola" viewBox="0 0 512 110" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g-banda-1" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#3d8ddb" />
+                    <stop offset="1" stop-color="#78b6ec" />
+                  </linearGradient>
+                </defs>
+                <path d="M0 0H512V16C400 30 250 4 120 6 70 7 30 12 0 16z" fill="var(--fondo-panel)" />
+                <path d="M0 16C30 12 70 7 120 6c130-2 280 24 392 10V36C400 20 250 30 120 64 70 76 30 80 0 82z"
+                  fill="url(#g-banda-1)" />
+              </svg>
+              <blockquote class="mano franja__frase">
+                <p>“Un municipio moderno <br>utiliza la tecnología para servir mejor”</p>
+                <svg class="trazo" aria-hidden="true">
+                  <use href="#trazo" />
+                </svg>
+              </blockquote>
+            </div>
+          </div>
+        </article>
+
       </div>
-    </article>
+    </section>
 
-    <!-- ───────────── PANEL 3 · HOJA DOBLE ───────────── -->
-    <article class="panel panel--sgtd" aria-labelledby="t-que-es">
-      <div class="panel__in">
-        <section class="que-es">
-          <h2 class="que-es__cinta" id="t-que-es">
-            <span class="que-es__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg></span>
-            ¿Qué es el SGTD?
-          </h2>
-          <p>El <strong>Sistema de Gestión de Trámite Documentario (SGTD)</strong> es una plataforma digital que permite a los ciudadanos consultar el estado de los documentos registrados en la Municipalidad Provincial de Maynas, de manera rápida, segura y transparente.</p>
-          <p class="mas-info"><span>Más información, <br>más confianza</span><svg class="ico" aria-hidden="true"><use href="#i-doc-ok"/></svg></p>
-        </section>
+    <!-- ================================================================
+     CARA INTERIOR · Recorrido · Información · Seguridad
+     ================================================================ -->
+    <section class="cara" id="interior" aria-labelledby="rotulo-interior">
+      <p class="cara__rotulo" id="rotulo-interior">Cara interior <span>Recorrido · Información · Seguridad</span></p>
 
-        <section>
-          <h2 class="cinta-lateral"><svg class="ico" aria-hidden="true"><use href="#i-personas"/></svg>Beneficios para el ciudadano</h2>
-          <ul class="beneficios">
-            <li class="item">
-              <span class="disco"><svg class="ico"><use href="#i-reloj"/></svg></span>
-              <div><h3>Mayor rapidez</h3><p>Conoce el estado de tu trámite en línea, <br>sin necesidad de acudir personalmente.</p></div>
-            </li>
-            <li class="item">
-              <span class="disco"><svg class="ico"><use href="#i-lupa"/></svg></span>
-              <div><h3>Información accesible</h3><p>Visualiza en qué área se encuentra tu documento <br>y los movimientos realizados.</p></div>
-            </li>
-            <li class="item">
-              <span class="disco"><svg class="ico"><use href="#i-escudo-ok"/></svg></span>
-              <div><h3>Mayor transparencia</h3><p>Acceso a información actualizada y confiable.</p></div>
-            </li>
-            <li class="item">
-              <span class="disco"><svg class="ico"><use href="#i-like"/></svg></span>
-              <div><h3>Mejor atención</h3><p>Un municipio más cercano y al servicio del ciudadano.</p></div>
-            </li>
-            <li class="item">
-              <span class="disco"><svg class="ico"><use href="#i-hoja"/></svg></span>
-              <div><h3>Contribuye al cuidado del medio ambiente</h3><p>Reduce el uso de papel y promueve la gestión digital.</p></div>
-            </li>
-          </ul>
-        </section>
+      <div class="hoja">
 
-        <div class="franja">
-          <div class="franja__foto" aria-hidden="true"><svg><use href="#ciudad"/></svg></div>
-          <svg class="franja__ola" viewBox="0 0 512 110" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="g-banda-1" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#3d8ddb"/>
-                <stop offset="1" stop-color="#78b6ec"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 0H512V16C400 30 250 4 120 6 70 7 30 12 0 16z" fill="var(--fondo-panel)"/>
-            <path d="M0 16C30 12 70 7 120 6c130-2 280 24 392 10V36C400 20 250 30 120 64 70 76 30 80 0 82z" fill="url(#g-banda-1)"/>
-          </svg>
-          <blockquote class="mano franja__frase">
-            <p>“Un municipio moderno <br>utiliza la tecnología para servir mejor”</p>
-            <svg class="trazo" aria-hidden="true"><use href="#trazo"/></svg>
-          </blockquote>
-        </div>
-      </div>
-    </article>
+        <!-- ───────────── PANEL 4 · RECORRIDO DEL DOCUMENTO ───────────── -->
+        <article class="panel panel--recorrido" aria-labelledby="t-recorrido">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-recorrido">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-doc" />
+                </svg></span>
+              Recorrido del documento
+            </h2>
+            <p class="bajada">Del ingreso en Mesa de Partes <br>al seguimiento digital</p>
+
+            <ol class="pasos pasos--flujo">
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">1</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-doc" />
+                  </svg></span>
+                <div>
+                  <h3>Mesa de Partes <br>física o virtual</h3>
+                  <p>Presenta tu documento en Mesa de Partes de la municipalidad o de manera virtual.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">2</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-doc-mas" />
+                  </svg></span>
+                <div>
+                  <h3>Registro del documento</h3>
+                  <p>Tu documento es registrado en el SGTD <br>y se le asigna un número de trámite.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">3</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-organigrama" />
+                  </svg></span>
+                <div>
+                  <h3>Derivación al área correspondiente</h3>
+                  <p>El documento es derivado al área <br>competente para su atención.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">4</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-portapapeles" />
+                  </svg></span>
+                <div>
+                  <h3>Evaluación y atención</h3>
+                  <p>El área revisa el documento y realiza <br>las acciones necesarias.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">5</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-lupa" />
+                  </svg></span>
+                <div>
+                  <h3>Seguimiento del trámite</h3>
+                  <p>Puedes consultar el estado y los <br>movimientos del documento en línea.</p>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__num" aria-hidden="true">6</span>
+                <span class="burbuja"><svg class="ico">
+                    <use href="#i-doc-ok" />
+                  </svg></span>
+                <div>
+                  <h3>Resultado / atención</h3>
+                  <p>Obtén la respuesta o atención <br>de tu documento.</p>
+                </div>
+              </li>
+            </ol>
+
+            <p class="recuadro aviso">
+              <span class="aviso__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-info" />
+                </svg></span>
+              <span><strong>El SGTD no reemplaza a Mesa de Partes.</strong> Permite consultar documentos ya
+                registrados.</span>
+            </p>
+
+            <div class="oficina">
+              <svg class="oficina__ola" viewBox="0 0 512 90" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 0H512V30C420 48 300 16 180 22 100 26 40 44 0 40z" fill="var(--fondo-panel)" />
+                <path d="M0 40C40 44 100 26 180 22c120-6 240 26 332 8V52C420 70 300 40 180 46 100 50 40 66 0 62z"
+                  fill="#8cc4f3" opacity=".7" />
+              </svg>
+              <div class="laptop laptop--oficina" role="img" aria-label="Laptop mostrando el panel de inicio del SGTD">
+                <div class="laptop__tapa">
+                  <div class="laptop__pantalla">
+                    <div class="panelui">
+                      <div class="panelui__lateral">
+                        <span class="panelui__logo"><img src="assets/img/escudo-maynas.png" alt="" width="346"
+                            height="523">MAYNAS</span>
+                        <span class="activo">Inicio</span>
+                        <span>Búsqueda general</span>
+                        <span>Pendientes <em>9</em></span>
+                        <span>Recibidos <em>3</em></span>
+                        <span>Despachados <em>5</em></span>
+                        <span>Archivados</span>
+                        <span>Borradores</span>
+                        <span>Bitácora interna</span>
+                        <span class="marcado">Nuevo documento</span>
+                        <span>Reservar número</span>
+                        <span class="panelui__salir">Cerrar sesión</span>
+                      </div>
+                      <div class="panelui__principal">
+                        <div class="panelui__barra">Sistema de Gestión de Trámite Documentario <i></i><i></i><i></i>
+                        </div>
+                        <div class="panelui__bienvenida"><small>Bienvenido</small><b>GPO</b><span>Panel de trámite
+                            documentario de GPO</span></div>
+                        <div class="panelui__stats">
+                          <span class="s-ambar"><b>1866</b> Pendientes</span>
+                          <span class="s-verde"><b>35</b> Recibidos</span>
+                          <span class="s-azul"><b>5546</b> Despachados</span>
+                          <span class="s-gris"><b>0</b> Archivados</span>
+                          <span class="s-lila"><b>0</b> Borradores</span>
+                          <span class="s-menta">Nuevo documento</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="laptop__base"><span class="laptop__teclas"></span><span class="laptop__touch"></span></div>
+              </div>
+              <p class="mano oficina__frase">Tu trámite <br>también avanza <br>en línea <svg class="trazo"
+                  aria-hidden="true">
+                  <use href="#trazo" />
+                </svg></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────── PANEL 5 · QUÉ INFORMACIÓN PUEDES CONSULTAR ───────────── -->
+        <article class="panel panel--info" aria-labelledby="t-info">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-info">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-lupa" />
+                </svg></span>
+              ¿Qué información puedes consultar?
+            </h2>
+            <p class="bajada">Conoce el estado y los movimientos <br>de tu documento</p>
+
+            <figure class="ruta" aria-label="Ejemplo de hoja de ruta generada por el SGTD">
+              <div class="ruta__cabecera">
+                <span class="ruta__pestana">
+                  <img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
+                  <span><small>Municipalidad Provincial de</small>MAYNAS</span>
+                </span>
+                <span class="ruta__sistema">Sistema de Gestión <br>de Trámite Documentario</span>
+              </div>
+              <div class="ruta__cuerpo">
+                <div class="ruta__encabezado">
+                  <p class="ruta__entidad"><b>Municipalidad Provincial de Maynas</b><br>Calle R. Echenique Nro.
+                    350<br>RUC: 20103846590</p>
+                  <dl class="ruta__meta">
+                    <dt>Página:</dt>
+                    <dd>1</dd>
+                    <dt>Fecha:</dt>
+                    <dd>16/09/2026</dd>
+                    <dt>Hora:</dt>
+                    <dd>13:55:32</dd>
+                  </dl>
+                  <!-- PENDIENTE: QR de ejemplo de la hoja de ruta -->
+                  <div class="ruta__qr">
+                    <div class="qr qr--mini" data-pendiente="qr-hoja-ruta" role="img"
+                      aria-label="Código QR de la hoja de ruta (pendiente)">
+                      <span class="qr__marco"><i></i><i></i><i></i></span>
+                    </div>
+                    <small>Escanear para ver la ruta detallada</small>
+                  </div>
+                </div>
+
+                <p class="ruta__titulo">HOJA DE RUTA TRAMITE DOCUMENTARIO</p>
+
+                <dl class="ruta__datos">
+                  <dt>Ingresó:</dt>
+                  <dd>14/08/2026</dd>
+                  <dt>Número:</dt>
+                  <dd>EXP N° 22149-2026-UADAG-SG-MPM</dd>
+                  <dt>Folios:</dt>
+                  <dd>119</dd>
+                  <dt>Acción:</dt>
+                  <dd>ATENCION</dd>
+                  <dt>Asunto:</dt>
+                  <dd>SOL. LIC. DE EDIFICACION DE OBRA NUEVA</dd>
+                </dl>
+
+                <div class="ruta__tabla">
+                  <table>
+                    <caption class="sr-only">Movimientos del expediente</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Oficina Origen</th>
+                        <th scope="col">Oficina Destino</th>
+                        <th scope="col">Enviado Con</th>
+                        <th scope="col">Situación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>14/08/2026</td>
+                        <td>UNIDAD DE ADMINISTRACION DOCUMENTARIA Y ARCHIVO GENERAL</td>
+                        <td>GERENCIA DE ACONDICIONAMIENTO TERRITORIAL</td>
+                        <td>EXPEDIENTE 22149</td>
+                        <td>DESPACHADO</td>
+                      </tr>
+                      <tr>
+                        <td>17/08/2026</td>
+                        <td>GERENCIA DE ACONDICIONAMIENTO TERRITORIAL</td>
+                        <td>SUB GERENCIA DE DESARROLLO Y PLANEAMIENTO URBANO</td>
+                        <td>PROVEIDO 4568</td>
+                        <td>DESPACHADO</td>
+                      </tr>
+                      <tr>
+                        <td>18/08/2026</td>
+                        <td>SUB GERENCIA DE DESARROLLO Y PLANEAMIENTO URBANO</td>
+                        <td>COMISION TECNICA DE HABILITACION URBANA Y EDIFICACIONES</td>
+                        <td>PROVEIDO 4028</td>
+                        <td>INGRESADO (*)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="ruta__nota">(*): Indica último paradero del documento</p>
+              </div>
+            </figure>
+
+            <ul class="datos">
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-doc" />
+                  </svg></span>
+                <div>
+                  <h3>Número de documento <br>o trámite</h3>
+                  <p>Identifica tu expediente <br>en el sistema.</p>
+                </div>
+              </li>
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-lista" />
+                  </svg></span>
+                <div>
+                  <h3>Historial de movimientos</h3>
+                  <p>Revisa todas las acciones <br>y derivaciones realizadas.</p>
+                </div>
+              </li>
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-check" />
+                  </svg></span>
+                <div>
+                  <h3>Estado actual</h3>
+                  <p>Conoce en qué etapa se <br>encuentra tu trámite.</p>
+                </div>
+              </li>
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-calendario" />
+                  </svg></span>
+                <div>
+                  <h3>Fechas de ingreso <br>y derivaciones</h3>
+                  <p>Consulta las fechas y horas <br>de cada movimiento.</p>
+                </div>
+              </li>
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-edificio" />
+                  </svg></span>
+                <div>
+                  <h3>Área actual</h3>
+                  <p>Sabe qué área está <br>atendiendo tu documento.</p>
+                </div>
+              </li>
+              <li class="item">
+                <span class="disco disco--aro"><svg class="ico">
+                    <use href="#i-chat" />
+                  </svg></span>
+                <div>
+                  <h3>Observaciones o resultado <br>de atención</h3>
+                  <p>Visualiza comentarios y <br>la respuesta final.</p>
+                </div>
+              </li>
+            </ul>
+
+            <p class="mano info__lema">Información clara, un municipio más cercano</p>
+          </div>
+        </article>
+
+        <!-- ───────────── PANEL 6 · SEGURIDAD Y TRAZABILIDAD ───────────── -->
+        <article class="panel panel--seguridad" aria-labelledby="t-seguridad">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-seguridad">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-escudo-ok" />
+                </svg></span>
+              Seguridad y trazabilidad
+            </h2>
+            <p class="seguridad__bajada">Información protegida y seguimiento confiable</p>
+
+            <div class="escena-segura">
+              <div class="escena-segura__fondo" aria-hidden="true">
+                <span class="orbita"></span>
+                <span class="nodo nodo--doc"><svg class="ico">
+                    <use href="#i-doc" />
+                  </svg></span>
+                <span class="nodo nodo--personas"><svg class="ico">
+                    <use href="#i-personas" />
+                  </svg></span>
+                <span class="nodo nodo--bd"><svg class="ico">
+                    <use href="#i-bd" />
+                  </svg></span>
+                <span class="nodo nodo--engrane"><svg class="ico">
+                    <use href="#i-engrane" />
+                  </svg></span>
+                <svg class="escudo-candado" viewBox="0 0 120 140">
+                  <defs>
+                    <linearGradient id="g-escudo" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#46a4ff" />
+                      <stop offset=".55" stop-color="#0b62d8" />
+                      <stop offset="1" stop-color="#0747a6" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M60 5 111 22v41c0 36-23 60-51 72C32 123 9 99 9 63V22z" fill="url(#g-escudo)" stroke="#eaf5ff"
+                    stroke-width="5" stroke-linejoin="round" />
+                  <path d="M60 5 111 22v41c0 36-23 60-51 72z" fill="#fff" opacity=".1" />
+                  <path d="M47 64V54a13 13 0 0 1 26 0v10" fill="none" stroke="#fff" stroke-width="7" />
+                  <rect x="38" y="62" width="44" height="36" rx="5" fill="#fff" />
+                  <path d="M60 72a5 5 0 0 1 2.6 9.3V89h-5.2v-7.7A5 5 0 0 1 60 72z" fill="#0b5cd0" />
+                </svg>
+              </div>
+              <p class="mano escena-segura__frase">Tus datos <br>están seguros <br>en buenas manos <svg class="trazo"
+                  aria-hidden="true">
+                  <use href="#trazo" />
+                </svg></p>
+            </div>
+
+            <ul class="controles">
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-persona" />
+                  </svg></span>
+                <div>
+                  <h3>Control de acceso de usuarios</h3>
+                  <p>Acceso restringido y autenticación segura.</p>
+                </div>
+              </li>
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-personas" />
+                  </svg></span>
+                <div>
+                  <h3>Perfiles y permisos</h3>
+                  <p>Cada usuario cuenta con permisos según sus funciones.</p>
+                </div>
+              </li>
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-doc" />
+                  </svg></span>
+                <div>
+                  <h3>Registro de operaciones</h3>
+                  <p>Se registran todas las acciones realizadas en el sistema.</p>
+                </div>
+              </li>
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-lupa" />
+                  </svg></span>
+                <div>
+                  <h3>Trazabilidad de documentos</h3>
+                  <p>Permite conocer todo el recorrido del documento.</p>
+                </div>
+              </li>
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-bd" />
+                  </svg></span>
+                <div>
+                  <h3>Respaldo de información</h3>
+                  <p>La información se encuentra respaldada y protegida.</p>
+                </div>
+              </li>
+              <li class="item control">
+                <span class="disco"><svg class="ico">
+                    <use href="#i-escudo-ok" />
+                  </svg></span>
+                <div>
+                  <h3>Buenas prácticas de seguridad informática</h3>
+                  <p>Aplicamos estándares y medidas de seguridad para garantizar la confidencialidad, integridad y
+                    disponibilidad de la información.</p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="franja franja--cierre">
+              <div class="franja__foto" aria-hidden="true"><svg>
+                  <use href="#ciudad" />
+                </svg></div>
+              <svg class="franja__ola" viewBox="0 0 512 110" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g-banda-2" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#5aa4e8" />
+                    <stop offset="1" stop-color="#2f7fd6" />
+                  </linearGradient>
+                </defs>
+                <path d="M0 0H512V10C440 40 330 44 220 34 130 26 60 6 0 12z" fill="var(--fondo-panel)" />
+                <path d="M0 12C60 6 130 26 220 34c110 10 220 6 292-24V40C440 70 330 84 220 76 130 70 60 54 0 58z"
+                  fill="url(#g-banda-2)" />
+              </svg>
+              <div class="franja__pie">
+                <p class="marca marca--blanca">
+                  <img class="marca__escudo" src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
+                  <span class="marca__txt">
+                    <span class="marca__pre">Municipalidad Provincial de</span>
+                    <span class="marca__nombre">MAYNAS</span>
+                    <!-- <span class="marca__lema">Gestión que construye bienestar</span> -->
+                  </span>
+                </p>
+                <p class="mano franja__frase">Modernizamos la gestión <br>para servir mejor. <svg class="trazo"
+                    aria-hidden="true">
+                    <use href="#trazo" />
+                  </svg></p>
+              </div>
+            </div>
+          </div>
+        </article>
 
   </div>
 </section>
 
 <!-- ================================================================
-     CARA INTERIOR · Recorrido · Información · Seguridad
+     CARA 3 · Consulta en el tótem · 3 pasos
      ================================================================ -->
-<section class="cara" id="interior" aria-labelledby="rotulo-interior">
-  <p class="cara__rotulo" id="rotulo-interior">Cara interior <span>Recorrido · Información · Seguridad</span></p>
+<section class="cara" id="totem" aria-labelledby="rotulo-totem">
+  <p class="cara__rotulo" id="rotulo-totem">Otra forma de consultar <span>Tótem de atención · 3 pasos</span></p>
 
   <div class="hoja">
 
-    <!-- ───────────── PANEL 4 · RECORRIDO DEL DOCUMENTO ───────────── -->
-    <article class="panel panel--recorrido" aria-labelledby="t-recorrido">
+    <!-- ───────────── PANEL 7 · PASO 1 ───────────── -->
+    <article class="panel panel--totem" aria-labelledby="t-totem-1">
       <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-recorrido">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg></span>
-          Recorrido del documento
+        <h2 class="cinta cinta--icono" id="t-totem-1">
+          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-totem"/></svg></span>
+          Consulta en el tótem
         </h2>
-        <p class="bajada">Del ingreso en Mesa de Partes <br>al seguimiento digital</p>
+        <p class="bajada">Otra forma de consultar <br>para documentos de Mesa de Partes</p>
 
-        <ol class="pasos pasos--flujo">
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">1</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-doc"/></svg></span>
-            <div><h3>Mesa de Partes <br>física o virtual</h3><p>Presenta tu documento en Mesa de Partes de la municipalidad o de manera virtual.</p></div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">2</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-doc-mas"/></svg></span>
-            <div><h3>Registro del documento</h3><p>Tu documento es registrado en el SGTD <br>y se le asigna un número de trámite.</p></div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">3</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-organigrama"/></svg></span>
-            <div><h3>Derivación al área correspondiente</h3><p>El documento es derivado al área <br>competente para su atención.</p></div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">4</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-portapapeles"/></svg></span>
-            <div><h3>Evaluación y atención</h3><p>El área revisa el documento y realiza <br>las acciones necesarias.</p></div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">5</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-lupa"/></svg></span>
-            <div><h3>Seguimiento del trámite</h3><p>Puedes consultar el estado y los <br>movimientos del documento en línea.</p></div>
-          </li>
-          <li class="paso">
-            <span class="paso__num" aria-hidden="true">6</span>
-            <span class="burbuja"><svg class="ico"><use href="#i-doc-ok"/></svg></span>
-            <div><h3>Resultado / atención</h3><p>Obtén la respuesta o atención <br>de tu documento.</p></div>
-          </li>
-        </ol>
+        <figure class="totem-paso">
+          <span class="totem-paso__num" aria-hidden="true">1</span>
+          <div class="totem-paso__foto">
+            <img src="assets/img/paso1.png" alt="Persona ingresando su número de documento en la pantalla del tótem de consulta" width="1024" height="1536" loading="lazy">
+          </div>
+          <figcaption>
+            <h3>Ingresa tu número de documento</h3>
+            <p>En la pantalla del tótem escribe tu <strong>DNI</strong> (8 dígitos) o carnet de extranjería (9 dígitos) y presiona <strong>Consultar trámite</strong>.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- ───────────── PANEL 8 · PASO 2 ───────────── -->
+    <article class="panel panel--totem" aria-labelledby="t-totem-2">
+      <div class="panel__in">
+        <h2 class="cinta cinta--icono" id="t-totem-2">
+          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc-num"/></svg></span>
+          Paso 2 · Número de trámite
+        </h2>
+        <p class="bajada">Con el número que te entregó <br>Mesa de Partes</p>
+
+        <figure class="totem-paso">
+          <span class="totem-paso__num" aria-hidden="true">2</span>
+          <div class="totem-paso__foto">
+            <img src="assets/img/paso2.png" alt="Ventana Consultar trámite del tótem con el número de trámite ingresado en el teclado" width="1086" height="1448" loading="lazy">
+          </div>
+          <figcaption>
+            <h3>Escribe tu número de trámite</h3>
+            <p>Usa el teclado en pantalla para escribir tu número de trámite (por ejemplo, <strong>252-2026</strong>) y presiona <strong>Consultar</strong>.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- ───────────── PANEL 9 · PASO 3 ───────────── -->
+    <article class="panel panel--totem" aria-labelledby="t-totem-3">
+      <div class="panel__in">
+        <h2 class="cinta cinta--icono" id="t-totem-3">
+          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc-ok"/></svg></span>
+          Paso 3 · Hoja de ruta
+        </h2>
+        <p class="bajada">Consulta el estado y los <br>movimientos del documento</p>
+
+        <figure class="totem-paso">
+          <span class="totem-paso__num" aria-hidden="true">3</span>
+          <div class="totem-paso__foto">
+            <img src="assets/img/paso3.png" alt="Hoja de ruta del trámite mostrada en el tótem, con las oficinas y los movimientos del documento" width="1086" height="1448" loading="lazy">
+          </div>
+          <figcaption>
+            <h3>Visualiza tu hoja de ruta</h3>
+            <p>Verás el número de expediente, el área actual y cada derivación con su fecha y situación.</p>
+          </figcaption>
+        </figure>
 
         <p class="recuadro aviso">
           <span class="aviso__icono"><svg class="ico" aria-hidden="true"><use href="#i-info"/></svg></span>
-          <span><strong>El SGTD no reemplaza a Mesa de Partes.</strong> Permite consultar documentos ya registrados.</span>
+          <span><strong>Recuerda:</strong> para consultar en el tótem, tu documento debe estar registrado en Mesa de Partes (física o virtual).</span>
         </p>
-
-        <div class="oficina">
-          <svg class="oficina__ola" viewBox="0 0 512 90" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0 0H512V30C420 48 300 16 180 22 100 26 40 44 0 40z" fill="var(--fondo-panel)"/>
-            <path d="M0 40C40 44 100 26 180 22c120-6 240 26 332 8V52C420 70 300 40 180 46 100 50 40 66 0 62z" fill="#8cc4f3" opacity=".7"/>
-          </svg>
-          <div class="laptop laptop--oficina" role="img" aria-label="Laptop mostrando el panel de inicio del SGTD">
-            <div class="laptop__tapa">
-              <div class="laptop__pantalla">
-                <div class="panelui">
-                  <div class="panelui__lateral">
-                    <span class="panelui__logo"><img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">MAYNAS</span>
-                    <span class="activo">Inicio</span>
-                    <span>Búsqueda general</span>
-                    <span>Pendientes <em>9</em></span>
-                    <span>Recibidos <em>3</em></span>
-                    <span>Despachados <em>5</em></span>
-                    <span>Archivados</span>
-                    <span>Borradores</span>
-                    <span>Bitácora interna</span>
-                    <span class="marcado">Nuevo documento</span>
-                    <span>Reservar número</span>
-                    <span class="panelui__salir">Cerrar sesión</span>
-                  </div>
-                  <div class="panelui__principal">
-                    <div class="panelui__barra">Sistema de Gestión de Trámite Documentario <i></i><i></i><i></i></div>
-                    <div class="panelui__bienvenida"><small>Bienvenido</small><b>GPO</b><span>Panel de trámite documentario de GPO</span></div>
-                    <div class="panelui__stats">
-                      <span class="s-ambar"><b>1866</b> Pendientes</span>
-                      <span class="s-verde"><b>35</b> Recibidos</span>
-                      <span class="s-azul"><b>5546</b> Despachados</span>
-                      <span class="s-gris"><b>0</b> Archivados</span>
-                      <span class="s-lila"><b>0</b> Borradores</span>
-                      <span class="s-menta">Nuevo documento</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="laptop__base"><span class="laptop__teclas"></span><span class="laptop__touch"></span></div>
-          </div>
-          <p class="mano oficina__frase">Tu trámite <br>también avanza <br>en línea <svg class="trazo" aria-hidden="true"><use href="#trazo"/></svg></p>
-        </div>
-      </div>
-    </article>
-
-    <!-- ───────────── PANEL 5 · QUÉ INFORMACIÓN PUEDES CONSULTAR ───────────── -->
-    <article class="panel panel--info" aria-labelledby="t-info">
-      <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-info">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-lupa"/></svg></span>
-          ¿Qué información puedes consultar?
-        </h2>
-        <p class="bajada">Conoce el estado y los movimientos <br>de tu documento</p>
-
-        <figure class="ruta" aria-label="Ejemplo de hoja de ruta generada por el SGTD">
-          <div class="ruta__cabecera">
-            <span class="ruta__pestana">
-              <img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
-              <span><small>Municipalidad Provincial de</small>MAYNAS</span>
-            </span>
-            <span class="ruta__sistema">Sistema de Gestión <br>de Trámite Documentario</span>
-          </div>
-          <div class="ruta__cuerpo">
-            <div class="ruta__encabezado">
-              <p class="ruta__entidad"><b>Municipalidad Provincial de Maynas</b><br>Calle R. Echenique Nro. 350<br>RUC: 20103846590</p>
-              <dl class="ruta__meta">
-                <dt>Página:</dt><dd>1</dd>
-                <dt>Fecha:</dt><dd>16/09/2026</dd>
-                <dt>Hora:</dt><dd>13:55:32</dd>
-              </dl>
-              <!-- PENDIENTE: QR de ejemplo de la hoja de ruta -->
-              <div class="ruta__qr">
-                <div class="qr qr--mini" data-pendiente="qr-hoja-ruta" role="img" aria-label="Código QR de la hoja de ruta (pendiente)">
-                  <span class="qr__marco"><i></i><i></i><i></i></span>
-                </div>
-                <small>Escanear para ver la ruta detallada</small>
-              </div>
-            </div>
-
-            <p class="ruta__titulo">HOJA DE RUTA TRAMITE DOCUMENTARIO</p>
-
-            <dl class="ruta__datos">
-              <dt>Ingresó:</dt><dd>14/08/2026</dd>
-              <dt>Número:</dt><dd>EXP N° 22149-2026-UADAG-SG-MPM</dd>
-              <dt>Folios:</dt><dd>119</dd>
-              <dt>Acción:</dt><dd>ATENCION</dd>
-              <dt>Asunto:</dt><dd>SOL. LIC. DE EDIFICACION DE OBRA NUEVA</dd>
-            </dl>
-
-            <div class="ruta__tabla">
-              <table>
-                <caption class="sr-only">Movimientos del expediente</caption>
-                <thead>
-                  <tr><th scope="col">Fecha</th><th scope="col">Oficina Origen</th><th scope="col">Oficina Destino</th><th scope="col">Enviado Con</th><th scope="col">Situación</th></tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>14/08/2026</td>
-                    <td>UNIDAD DE ADMINISTRACION DOCUMENTARIA Y ARCHIVO GENERAL</td>
-                    <td>GERENCIA DE ACONDICIONAMIENTO TERRITORIAL</td>
-                    <td>EXPEDIENTE 22149</td>
-                    <td>DESPACHADO</td>
-                  </tr>
-                  <tr>
-                    <td>17/08/2026</td>
-                    <td>GERENCIA DE ACONDICIONAMIENTO TERRITORIAL</td>
-                    <td>SUB GERENCIA DE DESARROLLO Y PLANEAMIENTO URBANO</td>
-                    <td>PROVEIDO 4568</td>
-                    <td>DESPACHADO</td>
-                  </tr>
-                  <tr>
-                    <td>18/08/2026</td>
-                    <td>SUB GERENCIA DE DESARROLLO Y PLANEAMIENTO URBANO</td>
-                    <td>COMISION TECNICA DE HABILITACION URBANA Y EDIFICACIONES</td>
-                    <td>PROVEIDO 4028</td>
-                    <td>INGRESADO (*)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="ruta__nota">(*): Indica último paradero del documento</p>
-          </div>
-        </figure>
-
-        <ul class="datos">
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-doc"/></svg></span>
-            <div><h3>Número de documento <br>o trámite</h3><p>Identifica tu expediente <br>en el sistema.</p></div>
-          </li>
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-lista"/></svg></span>
-            <div><h3>Historial de movimientos</h3><p>Revisa todas las acciones <br>y derivaciones realizadas.</p></div>
-          </li>
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-check"/></svg></span>
-            <div><h3>Estado actual</h3><p>Conoce en qué etapa se <br>encuentra tu trámite.</p></div>
-          </li>
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-calendario"/></svg></span>
-            <div><h3>Fechas de ingreso <br>y derivaciones</h3><p>Consulta las fechas y horas <br>de cada movimiento.</p></div>
-          </li>
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-edificio"/></svg></span>
-            <div><h3>Área actual</h3><p>Sabe qué área está <br>atendiendo tu documento.</p></div>
-          </li>
-          <li class="item">
-            <span class="disco disco--aro"><svg class="ico"><use href="#i-chat"/></svg></span>
-            <div><h3>Observaciones o resultado <br>de atención</h3><p>Visualiza comentarios y <br>la respuesta final.</p></div>
-          </li>
-        </ul>
-
-        <p class="mano info__lema">Información clara, un municipio más cercano</p>
-      </div>
-    </article>
-
-    <!-- ───────────── PANEL 6 · SEGURIDAD Y TRAZABILIDAD ───────────── -->
-    <article class="panel panel--seguridad" aria-labelledby="t-seguridad">
-      <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-seguridad">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-escudo-ok"/></svg></span>
-          Seguridad y trazabilidad
-        </h2>
-        <p class="seguridad__bajada">Información protegida y seguimiento confiable</p>
-
-        <div class="escena-segura">
-          <div class="escena-segura__fondo" aria-hidden="true">
-            <span class="orbita"></span>
-            <span class="nodo nodo--doc"><svg class="ico"><use href="#i-doc"/></svg></span>
-            <span class="nodo nodo--personas"><svg class="ico"><use href="#i-personas"/></svg></span>
-            <span class="nodo nodo--bd"><svg class="ico"><use href="#i-bd"/></svg></span>
-            <span class="nodo nodo--engrane"><svg class="ico"><use href="#i-engrane"/></svg></span>
-            <svg class="escudo-candado" viewBox="0 0 120 140">
-              <defs>
-                <linearGradient id="g-escudo" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#46a4ff"/>
-                  <stop offset=".55" stop-color="#0b62d8"/>
-                  <stop offset="1" stop-color="#0747a6"/>
-                </linearGradient>
-              </defs>
-              <path d="M60 5 111 22v41c0 36-23 60-51 72C32 123 9 99 9 63V22z" fill="url(#g-escudo)" stroke="#eaf5ff" stroke-width="5" stroke-linejoin="round"/>
-              <path d="M60 5 111 22v41c0 36-23 60-51 72z" fill="#fff" opacity=".1"/>
-              <path d="M47 64V54a13 13 0 0 1 26 0v10" fill="none" stroke="#fff" stroke-width="7"/>
-              <rect x="38" y="62" width="44" height="36" rx="5" fill="#fff"/>
-              <path d="M60 72a5 5 0 0 1 2.6 9.3V89h-5.2v-7.7A5 5 0 0 1 60 72z" fill="#0b5cd0"/>
-            </svg>
-          </div>
-          <p class="mano escena-segura__frase">Tus datos <br>están seguros <br>en buenas manos <svg class="trazo" aria-hidden="true"><use href="#trazo"/></svg></p>
-        </div>
-
-        <ul class="controles">
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-persona"/></svg></span>
-            <div><h3>Control de acceso de usuarios</h3><p>Acceso restringido y autenticación segura.</p></div>
-          </li>
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-personas"/></svg></span>
-            <div><h3>Perfiles y permisos</h3><p>Cada usuario cuenta con permisos según sus funciones.</p></div>
-          </li>
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-doc"/></svg></span>
-            <div><h3>Registro de operaciones</h3><p>Se registran todas las acciones realizadas en el sistema.</p></div>
-          </li>
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-lupa"/></svg></span>
-            <div><h3>Trazabilidad de documentos</h3><p>Permite conocer todo el recorrido del documento.</p></div>
-          </li>
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-bd"/></svg></span>
-            <div><h3>Respaldo de información</h3><p>La información se encuentra respaldada y protegida.</p></div>
-          </li>
-          <li class="item control">
-            <span class="disco"><svg class="ico"><use href="#i-escudo-ok"/></svg></span>
-            <div><h3>Buenas prácticas de seguridad informática</h3><p>Aplicamos estándares y medidas de seguridad para garantizar la confidencialidad, integridad y disponibilidad de la información.</p></div>
-          </li>
-        </ul>
-
-        <div class="franja franja--cierre">
-          <div class="franja__foto" aria-hidden="true"><svg><use href="#ciudad"/></svg></div>
-          <svg class="franja__ola" viewBox="0 0 512 110" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="g-banda-2" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#5aa4e8"/>
-                <stop offset="1" stop-color="#2f7fd6"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 0H512V10C440 40 330 44 220 34 130 26 60 6 0 12z" fill="var(--fondo-panel)"/>
-            <path d="M0 12C60 6 130 26 220 34c110 10 220 6 292-24V40C440 70 330 84 220 76 130 70 60 54 0 58z" fill="url(#g-banda-2)"/>
-          </svg>
-          <div class="franja__pie">
-            <p class="marca marca--blanca">
-              <img class="marca__escudo" src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
-              <span class="marca__txt">
-                <span class="marca__pre">Municipalidad Provincial de</span>
-                <span class="marca__nombre">MAYNAS</span>
-                <span class="marca__lema">Gestión que construye bienestar</span>
-              </span>
-            </p>
-            <p class="mano franja__frase">Modernizamos la gestión <br>para servir mejor. <svg class="trazo" aria-hidden="true"><use href="#trazo"/></svg></p>
-          </div>
-        </div>
       </div>
     </article>
 
@@ -685,10 +1125,11 @@
 
 </main>
 
-<footer class="pie">
-  <p>Municipalidad Provincial de Maynas · Sistema de Gestión de Trámite Documentario</p>
-  <p>Para imprimir el tríptico usa <kbd>Ctrl</kbd> + <kbd>P</kbd> (A4 horizontal, a doble cara).</p>
-</footer>
+  <footer class="pie">
+    <p>Municipalidad Provincial de Maynas · Sistema de Gestión de Trámite Documentario</p>
+    <p>Para imprimir el tríptico usa <kbd>Ctrl</kbd> + <kbd>P</kbd> (A4 horizontal, una cara por hoja).</p>
+  </footer>
 
 </body>
+
 </html>

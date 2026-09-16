@@ -4,7 +4,8 @@
 
 Recrear como landing page (HTML + CSS, sin JavaScript), lo más fiel posible, el tríptico del
 **Sistema de Gestión de Trámite Documentario (SGTD)** de la Municipalidad Provincial de Maynas,
-conservando la estructura de tríptico (dos caras de tres paneles).
+conservando la estructura de tríptico (dos caras de tres paneles), más una cara adicional con la
+consulta en el tótem (3 pasos).
 
 Referencias usadas (`REFERENCIAS/`):
 
@@ -21,6 +22,9 @@ Referencias usadas (`REFERENCIAS/`):
 index.html                  ← landing (todo el contenido del tríptico)
 assets/css/triptico.css     ← estilos (retícula escalable, responsive e impresión)
 assets/img/escudo-maynas.png← escudo extraído del PPTX (image8.png)
+assets/img/paso1.png        ← tótem: ingreso del número de documento (cara Tótem)
+assets/img/paso2.png        ← tótem: número de trámite (cara Tótem)
+assets/img/paso3.png        ← tótem: hoja de ruta (cara Tótem)
 ```
 
 Para verlo basta con abrir `index.html` en el navegador. La única dependencia externa es Google Fonts
@@ -36,6 +40,9 @@ Para verlo basta con abrir `index.html` en el navegador. La única dependencia e
 | Interior | 4 · Recorrido | Recorrido del documento (6 pasos con flechas), aviso "El SGTD no reemplaza a Mesa de Partes" y laptop con el panel de inicio del sistema |
 | Interior | 5 · Información | ¿Qué información puedes consultar?, hoja de ruta de ejemplo (tabla real en HTML) y 6 datos consultables |
 | Interior | 6 · Seguridad | Escena de seguridad (escudo con candado y nodos), 6 controles y franja de cierre con la marca institucional |
+| Tótem | 7 · Paso 1 | Consulta en el tótem: foto del tótem con el ingreso del número de documento (DNI / carnet de extranjería) |
+| Tótem | 8 · Paso 2 | Número de trámite (ej. 252-2026) ingresado con el teclado en pantalla |
+| Tótem | 9 · Paso 3 | Hoja de ruta con el estado y los movimientos del documento + aviso "debe estar registrado en Mesa de Partes" |
 
 ## Decisiones técnicas
 
@@ -48,8 +55,8 @@ Para verlo basta con abrir `index.html` en el navegador. La única dependencia e
 - **Tablet y móvil (< 1180 px):** los paneles se apilan (máx. 560 px). En pantallas ≤ 520 px la
   retícula pasa a 420 unidades para que el texto sea legible, se ocultan los saltos de línea copiados
   de la referencia y se reacomodan la tabla, los datos consultables y la franja de cierre.
-- **Impresión (`Ctrl + P`):** A4 horizontal, una cara por hoja (2 páginas) y sin barra ni rótulos.
-  Se verificó generando un PDF con Chrome headless.
+- **Impresión (`Ctrl + P`):** A4 horizontal, una cara por hoja (3 páginas: exterior, interior y tótem)
+  y sin barra ni rótulos. Se verificó generando un PDF con Chrome headless.
 - **Íconos:** sprite SVG en línea (`<symbol>`), dibujados en estilo lineal para parecerse a la
   referencia. Cero archivos de íconos externos.
 - **Ilustraciones en vez de fotos.** Laptops, pantallas del sistema, hoja de ruta, escudo de
@@ -104,6 +111,10 @@ Del sistema (opcionales, porque hoy están recreadas en HTML):
 
 Para usar una captura, reemplazar el `div.ui` o el `div.panelui` dentro de `.laptop__pantalla` por
 `<img src="…" alt="…">`.
+
+- Las fotos `paso1.png`, `paso2.png` y `paso3.png` (cara Tótem) pesan ~2 MB cada una; son PNG a
+  buena resolución, ideales para impresión. Si importa el peso de la web, generar copias JPEG
+  optimizadas y usarlas solo en pantalla.
 
 ### 3. Validar contenido
 
