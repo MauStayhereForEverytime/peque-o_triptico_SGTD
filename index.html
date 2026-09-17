@@ -225,11 +225,11 @@
       <img src="assets/img/escudo-maynas.png" alt="" width="346" height="523">
       <span>SGTD <small>Municipalidad Provincial de Maynas</small></span>
     </a>
-  <nav class="barra__nav" aria-label="Caras del tríptico">
-    <a href="#exterior">Cara exterior</a>
-    <a href="#interior">Cara interior</a>
-    <a href="#totem">Tótem</a>
-  </nav>
+    <nav class="barra__nav" aria-label="Caras del tríptico">
+      <a href="#exterior">Cara exterior</a>
+      <a href="#interior">Cara interior</a>
+      <a href="#totem">Tótem</a>
+    </nav>
   </header>
 
   <main>
@@ -451,7 +451,7 @@
                   </svg>Accede al sistema aquí</p>
                 <!-- PENDIENTE: cuando exista el enlace, cambiar este <span> por
                  <a class="url-pill" href="https://…">https://…</a> -->
-                <span class="url-pill" data-pendiente="enlace-sgtd">https://sgtd.munimaynas.gob.pe/</span>
+                <span class="url-pill" data-pendiente="enlace-sgtd">https://sgtd.munimaynas.gob.pe/personal</span>
               </div>
               <!-- PENDIENTE: reemplazar el marcador por
                <img class="qr__img" src="assets/img/qr-sgtd.png" alt="Código QR para acceder al SGTD"> -->
@@ -1038,92 +1038,109 @@
           </div>
         </article>
 
-  </div>
-</section>
+      </div>
+    </section>
 
-<!-- ================================================================
+    <!-- ================================================================
      CARA 3 · Consulta en el tótem · 3 pasos
      ================================================================ -->
-<section class="cara" id="totem" aria-labelledby="rotulo-totem">
-  <p class="cara__rotulo" id="rotulo-totem">Otra forma de consultar <span>Tótem de atención · 3 pasos</span></p>
+    <section class="cara" id="totem" aria-labelledby="rotulo-totem">
+      <p class="cara__rotulo" id="rotulo-totem">Otra forma de consultar <span>Tótem de atención · 3 pasos</span></p>
 
-  <div class="hoja">
+      <div class="hoja">
 
-    <!-- ───────────── PANEL 7 · PASO 1 ───────────── -->
-    <article class="panel panel--totem" aria-labelledby="t-totem-1">
-      <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-totem-1">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-totem"/></svg></span>
-          Consulta en el tótem
-        </h2>
-        <p class="bajada">Otra forma de consultar <br>para documentos de Mesa de Partes</p>
+        <!-- ───────────── PANEL 7 · PASO 1 ───────────── -->
+        <article class="panel panel--totem" aria-labelledby="t-totem-1">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-totem-1">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-totem" />
+                </svg></span>
+              Consulta en el tótem
+            </h2>
+            <p class="bajada">Otra forma de consultar <br>para documentos de Mesa de Partes</p>
 
-        <figure class="totem-paso">
-          <span class="totem-paso__num" aria-hidden="true">1</span>
-          <div class="totem-paso__foto">
-            <img src="assets/img/paso1.png" alt="Persona ingresando su número de documento en la pantalla del tótem de consulta" width="1024" height="1536" loading="lazy">
+            <figure class="totem-paso">
+              <span class="totem-paso__num" aria-hidden="true">1</span>
+              <div class="totem-paso__foto">
+                <img src="assets/img/paso1.png"
+                  alt="Persona ingresando su número de documento en la pantalla del tótem de consulta" width="1024"
+                  height="1536" loading="lazy">
+              </div>
+              <figcaption>
+                <h3>Ingresa tu número de documento</h3>
+                <p>En la pantalla del tótem escribe tu <strong>DNI</strong> (8 dígitos) o carnet de extranjería (9
+                  dígitos) y presiona <strong>Consultar trámite</strong>.</p>
+              </figcaption>
+            </figure>
           </div>
-          <figcaption>
-            <h3>Ingresa tu número de documento</h3>
-            <p>En la pantalla del tótem escribe tu <strong>DNI</strong> (8 dígitos) o carnet de extranjería (9 dígitos) y presiona <strong>Consultar trámite</strong>.</p>
-          </figcaption>
-        </figure>
-      </div>
-    </article>
+        </article>
 
-    <!-- ───────────── PANEL 8 · PASO 2 ───────────── -->
-    <article class="panel panel--totem" aria-labelledby="t-totem-2">
-      <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-totem-2">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc-num"/></svg></span>
-          Paso 2 · Número de trámite
-        </h2>
-        <p class="bajada">Con el número que te entregó <br>Mesa de Partes</p>
+        <!-- ───────────── PANEL 8 · PASO 2 ───────────── -->
+        <article class="panel panel--totem" aria-labelledby="t-totem-2">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-totem-2">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-doc-num" />
+                </svg></span>
+              Paso 2 · Número de trámite
+            </h2>
+            <p class="bajada">Con el número que te entregó <br>Mesa de Partes</p>
 
-        <figure class="totem-paso">
-          <span class="totem-paso__num" aria-hidden="true">2</span>
-          <div class="totem-paso__foto">
-            <img src="assets/img/paso2.png" alt="Ventana Consultar trámite del tótem con el número de trámite ingresado en el teclado" width="1086" height="1448" loading="lazy">
+            <figure class="totem-paso">
+              <span class="totem-paso__num" aria-hidden="true">2</span>
+              <div class="totem-paso__foto">
+                <img src="assets/img/paso2.png"
+                  alt="Ventana Consultar trámite del tótem con el número de trámite ingresado en el teclado"
+                  width="1086" height="1448" loading="lazy">
+              </div>
+              <figcaption>
+                <h3>Escribe tu número de trámite</h3>
+                <p>Usa el teclado en pantalla para escribir tu número de trámite (por ejemplo,
+                  <strong>252-2026</strong>) y presiona <strong>Consultar</strong>.</p>
+              </figcaption>
+            </figure>
           </div>
-          <figcaption>
-            <h3>Escribe tu número de trámite</h3>
-            <p>Usa el teclado en pantalla para escribir tu número de trámite (por ejemplo, <strong>252-2026</strong>) y presiona <strong>Consultar</strong>.</p>
-          </figcaption>
-        </figure>
-      </div>
-    </article>
+        </article>
 
-    <!-- ───────────── PANEL 9 · PASO 3 ───────────── -->
-    <article class="panel panel--totem" aria-labelledby="t-totem-3">
-      <div class="panel__in">
-        <h2 class="cinta cinta--icono" id="t-totem-3">
-          <span class="cinta__icono"><svg class="ico" aria-hidden="true"><use href="#i-doc-ok"/></svg></span>
-          Paso 3 · Hoja de ruta
-        </h2>
-        <p class="bajada">Consulta el estado y los <br>movimientos del documento</p>
+        <!-- ───────────── PANEL 9 · PASO 3 ───────────── -->
+        <article class="panel panel--totem" aria-labelledby="t-totem-3">
+          <div class="panel__in">
+            <h2 class="cinta cinta--icono" id="t-totem-3">
+              <span class="cinta__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-doc-ok" />
+                </svg></span>
+              Paso 3 · Hoja de ruta
+            </h2>
+            <p class="bajada">Consulta el estado y los <br>movimientos del documento</p>
 
-        <figure class="totem-paso">
-          <span class="totem-paso__num" aria-hidden="true">3</span>
-          <div class="totem-paso__foto">
-            <img src="assets/img/paso3.png" alt="Hoja de ruta del trámite mostrada en el tótem, con las oficinas y los movimientos del documento" width="1086" height="1448" loading="lazy">
+            <figure class="totem-paso">
+              <span class="totem-paso__num" aria-hidden="true">3</span>
+              <div class="totem-paso__foto">
+                <img src="assets/img/paso3.png"
+                  alt="Hoja de ruta del trámite mostrada en el tótem, con las oficinas y los movimientos del documento"
+                  width="1086" height="1448" loading="lazy">
+              </div>
+              <figcaption>
+                <h3>Visualiza tu hoja de ruta</h3>
+                <p>Verás el número de expediente, el área actual y cada derivación con su fecha y situación.</p>
+              </figcaption>
+            </figure>
+
+            <p class="recuadro aviso">
+              <span class="aviso__icono"><svg class="ico" aria-hidden="true">
+                  <use href="#i-info" />
+                </svg></span>
+              <span><strong>Recuerda:</strong> para consultar en el tótem, tu documento debe estar registrado en Mesa de
+                Partes (física o virtual).</span>
+            </p>
           </div>
-          <figcaption>
-            <h3>Visualiza tu hoja de ruta</h3>
-            <p>Verás el número de expediente, el área actual y cada derivación con su fecha y situación.</p>
-          </figcaption>
-        </figure>
+        </article>
 
-        <p class="recuadro aviso">
-          <span class="aviso__icono"><svg class="ico" aria-hidden="true"><use href="#i-info"/></svg></span>
-          <span><strong>Recuerda:</strong> para consultar en el tótem, tu documento debe estar registrado en Mesa de Partes (física o virtual).</span>
-        </p>
       </div>
-    </article>
+    </section>
 
-  </div>
-</section>
-
-</main>
+  </main>
 
   <footer class="pie">
     <p>Municipalidad Provincial de Maynas · Sistema de Gestión de Trámite Documentario</p>
