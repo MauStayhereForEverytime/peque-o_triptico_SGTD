@@ -29,8 +29,12 @@
   /* Fotos opcionales: cambiar none por url("../img/archivo.jpg").
      La ilustración de respaldo queda debajo de la foto. */
   --foto-portada: none;   /* fachada de la Municipalidad (portada)            */
-  --foto-ciudad: none;    /* edificio / plaza de Iquitos (franjas azules)     */
+  --foto-ciudad: url("../img/fachada-maynas.png");  /* fachada real (franjas azules) */
   --foto-oficina: none;   /* oficina desenfocada (panel Recorrido)            */
+
+  /* Marca de agua de la portada: la fachada real, tenue, detrás del contenido. */
+  --foto-marca: url("../img/fachada-maynas.png");
+  --marca-agua-opacidad: .18;
 }
 
 /* ---------------------------------------------------------------------
@@ -666,6 +670,7 @@ ul, ol { padding: 0; list-style: none; }
   position: absolute;
   top: calc(404 * var(--u));
   left: calc(50% - 270 * var(--u));
+  display: none;
   width: calc(780 * var(--u));
   height: calc(226 * var(--u));
   opacity: .9;
@@ -677,6 +682,18 @@ ul, ol { padding: 0; list-style: none; }
   width: 100%;
   height: 100%;
   filter: blur(calc(.7 * var(--u)));
+}
+
+/* Marca de agua: la fachada real, tenue, por debajo del contenido */
+.panel--portada .panel__in::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: calc(820 * var(--u));
+  background: var(--foto-marca) center 45% / cover no-repeat;
+  opacity: var(--marca-agua-opacidad);
+  pointer-events: none;
 }
 
 .panel--portada .marca { margin-top: calc(18 * var(--u)); }
